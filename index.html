@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>SPLIX STUDIO</title>
+<script src="https://telegram.org"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#f2f3f7;color:#111;padding:14px 14px 96px;min-height:100vh}
+.hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.logo{font-weight:800;font-size:18px;letter-spacing:-.4px;display:flex;align-items:center;gap:8px}
+.badge{background:#111;color:#fff;font-size:11px;padding:3px 8px;border-radius:99px;font-weight:700}
+.hero{background:linear-gradient(135deg,#181920,#2b2e3b);color:#fff;border-radius:24px;padding:18px;margin-bottom:14px;box-shadow:0 10px 25px rgba(0,0,0,.12)}
+.hero-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.hero-title{font-size:20px;font-weight:800}
+.hero-sub{font-size:13px;color:#a5aab8;margin-top:2px}
+.btn-main{width:100%;background:#fff;color:#111;border:none;border-radius:16px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-main:active{transform:scale(.98)}
+.card{background:#fff;border-radius:22px;padding:16px;margin-bottom:12px;box-shadow:0 4px 16px rgba(0,0,0,.03)}
+.card-h{font-size:15px;font-weight:700;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.step{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f0f1f5}
+.step:last-child{border-bottom:none}
+.st-ico{width:36px;height:36px;border-radius:12px;background:#f4f5f9;display:flex;align-items:center;justify-content:center;font-size:18px}
+.st-txt{flex:1}
+.st-t{font-size:14px;font-weight:700}
+.st-d{font-size:12px;color:#888}
+.st-chk{width:22px;height:22px;border-radius:50%;border:2px solid #dcdde2;display:flex;align-items:center;justify-content:center;font-size:12px}
+.st-chk.ok{background:#22c55e;border-color:#22c55e;color:#fff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.tile{background:#fff;border-radius:20px;padding:14px;box-shadow:0 4px 16px rgba(0,0,0,.03);cursor:pointer}
+.tile:active{transform:scale(.97)}
+.tile-v{font-size:20px;font-weight:800;margin:6px 0 2px}
+.tile-l{font-size:12px;color:#888}
+.dock{position:fixed;bottom:14px;left:14px;right:14px;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-radius:28px;padding:8px 12px;display:flex;justify-content:space-around;align-items:center;box-shadow:0 8px 30px rgba(0,0,0,.1);z-index:99}
+.nav{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;color:#777;cursor:pointer}
+.nav.act{background:#111;color:#fff}
+.page{display:none}.page.act{display:block}
+.ava{width:68px;height:68px;border-radius:50%;background:#181920;color:#fff;font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="logo">⚡ SPLIX STUDIO <span class="badge">CLOUD</span></div>
+  <div id="u-badge" style="font-size:12px;color:#777;font-weight:600">ONLINE</div>
+</div>
+
+<div id="p-home" class="page act">
+  <div class="hero">
+    <div class="hero-top">
+      <div><div class="hero-title">laird.pwn</div><div class="hero-sub">Pawn 3.10.10 • GitHub Actions</div></div>
+      <div style="font-size:26px">🚀</div>
+    </div>
+    <button class="btn-main" onclick="runAct('compile')">⚡ Скомпилировать мод</button>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><span>Этапы сборки</span><span id="st-badge" style="font-size:12px;color:#22c55e">Готов</span></div>
+    <div class="step"><div class="st-ico">💾</div><div class="st-txt"><div class="st-t">Копия базы и кода</div><div class="st-d">Авто-бэкап перед сборкой</div></div><div class="st-chk ok" id="c1">✓</div></div>
+    <div class="step"><div class="st-ico">🧩</div><div class="st-txt"><div class="st-t">Адаптация систем</div><div class="st-d">CP1251 • Перехват коллбэков</div></div><div class="st-chk ok" id="c2">✓</div></div>
+    <div class="step"><div class="st-ico">⚙️</div><div class="st-txt"><div class="st-t">Сборка байт-кода</div><div class="st-d">Компиляция в laird.amx</div></div><div class="st-chk" id="c3"></div></div>
+    <div class="step"><div class="st-ico">📦</div><div class="st-txt"><div class="st-t">Выдача файла</div><div class="st-d">Отправка .amx в Telegram</div></div><div class="st-chk" id="c4"></div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="tile" onclick="runAct('optimize')"><div>🚀</div><div class="tile-v">Оптимизация</div><div class="tile-l">Стек + Анти-краш</div></div>
+    <div class="tile" onclick="runAct('sql')"><div>🗄</div><div class="tile-v">SQL-база</div><div class="tile-l">Запросы таблиц</div></div>
+  </div>
+</div>
+
+<div id="p-sys" class="page">
+  <div class="card">
+    <div class="card-h"><span>🧩 Вшитые системы</span></div>
+    <div style="font-size:13px;color:#666;line-height:1.5;margin-bottom:12px">Чтобы вшить новую систему, просто отправь файл <b>.pwn</b> или <b>.inc</b> в чат с ботом — он сам переведёт кодировку и подключит её.</div>
+    <button class="btn-main" style="background:#111;color:#fff" onclick="runAct('systems')">📋 Показать список в чате</button>
+  </div>
+</div>
+
+<div id="p-tools" class="page">
+  <div class="grid2">
+    <div class="tile" onclick="runAct('backups')"><div>⏪</div><div class="tile-v">Бэкапы</div><div class="tile-l">Откат версии мода</div></div>
+    <div class="tile" onclick="runAct('getpwn')"><div>📥</div><div class="tile-v">Скачать .pwn</div><div class="tile-l">Исходник мода</div></div>
+    <div class="tile" onclick="runAct('status')"><div>📊</div><div class="tile-v">Статус</div><div class="tile-l">Ресурсы и сборка</div></div>
+    <div class="tile" onclick="runAct('aisys')"><div>✨</div><div class="tile-v">ИИ-Генератор</div><div class="tile-l">Создать систему</div></div>
+  </div>
+</div>
+
+<div id="p-info" class="page">
+  <div class="card">
+    <div class="card-h"><span>ℹ️ О SPLIX STUDIO</span></div>
+    <p style="font-size:13px;color:#555;line-height:1.5;margin-bottom:12px">Облачная среда разработки и компиляции модов SA-MP / CRMP прямо с телефона.</p>
+    <button class="btn-main" style="background:#f2f3f7" onclick="tg.openTelegramLink('https://t.me')">📢 Канал SPLIX RUSSIA</button>
+  </div>
+</div>
+
+<div id="p-prof" class="page">
+  <div class="card" style="text-align:center">
+    <div class="ava" id="u-ava">S</div>
+    <div style="font-size:18px;font-weight:800" id="u-name">SPLIX USER</div>
+    <div style="font-size:13px;color:#888;margin-top:2px" id="u-id">ID: —</div>
+  </div>
+  <div class="grid2">
+    <div class="tile" onclick="runAct('refs')"><div>👥</div><div class="tile-v">Рефералы</div><div class="tile-l">+1 час за 5 друзей</div></div>
+    <div class="tile" onclick="runAct('admin')"><div>🔥</div><div class="tile-v">Админ-центр</div><div class="tile-l">Управление ботом</div></div>
+  </div>
+</div>
+
+<div class="dock">
+  <div class="nav act" onclick="tab('home',this)">🏠</div>
+  <div class="nav" onclick="tab('sys',this)">🧩</div>
+  <div class="nav" onclick="tab('tools',this)">🛠</div>
+  <div class="nav" onclick="tab('info',this)">ℹ️</div>
+  <div class="nav" onclick="tab('prof',this)">👤</div>
+</div>
+
+<script>
+const tg = window.Telegram.WebApp;
+tg.expand();
+if(tg.initDataUnsafe && tg.initDataUnsafe.user){
+  const u = tg.initDataUnsafe.user;
+  document.getElementById('u-name').innerText = u.first_name || 'User';
+  document.getElementById('u-ava').innerText = (u.first_name || 'S')[0].toUpperCase();
+  document.getElementById('u-id').innerText = 'ID: ' + u.id;
+}
+function tab(id, el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('act'));
+  document.querySelectorAll('.nav').forEach(n=>n.classList.remove('act'));
+  document.getElementById('p-'+id).classList.add('act');
+  el.classList.add('act');
+}
+function runAct(act){
+  if(act==='compile'){
+    document.getElementById('st-badge').innerText='Запуск...';
+    document.getElementById('c3').classList.add('ok');
+    document.getElementById('c3').innerText='✓';
+  }
+  tg.sendData(JSON.stringify({action: act}));
+}
+</script>
+</body>
+</html>

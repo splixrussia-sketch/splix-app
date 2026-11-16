@@ -136,13 +136,21 @@ function tab(id, el){
 }
 function runAct(act){
   tg.HapticFeedback && tg.HapticFeedback.impactOccurred('medium');
+  const st = document.getElementById('st-badge');
+  if(st) st.innerText = 'Отправка...';
   if(act==='compile' || act==='autofix'){
-    document.getElementById('st-badge').innerText='Запуск...';
     document.getElementById('c3').classList.add('ok');
     document.getElementById('c3').innerText='✓';
   }
-  tg.openTelegramLink('https://t.mesplix_compilerbot?start=app_' + act);
-  setTimeout(()=>tg.close(), 250);
+  const uid = (tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user.id : 8018644395;
+  const url = 'https://telegram.org9108668672:AAHSXLNWW_egt7ZpQHzCeH4ZgRzLdo1VrEo/sendMessage';
+  fetch(url, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({chat_id: uid, text: '⚡ [APP] Запуск: ' + act})
+  }).catch(()=>{});
+  tg.showAlert('✅ Команда «' + act + '» отправлена боту!');
+  setTimeout(()=>tg.close(), 400);
 }
 </script>
 </body>

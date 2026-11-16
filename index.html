@@ -135,12 +135,14 @@ function tab(id, el){
   el.classList.add('act');
 }
 function runAct(act){
-  if(act==='compile'){
+  tg.HapticFeedback && tg.HapticFeedback.impactOccurred('medium');
+  if(act==='compile' || act==='autofix'){
     document.getElementById('st-badge').innerText='Запуск...';
     document.getElementById('c3').classList.add('ok');
     document.getElementById('c3').innerText='✓';
   }
-  tg.sendData(JSON.stringify({action: act}));
+  tg.openTelegramLink('https://t.mesplix_compilerbot?start=app_' + act);
+  setTimeout(()=>tg.close(), 250);
 }
 </script>
 </body>
